@@ -35,7 +35,7 @@ impl KnapSack {
     }
 
     pub fn max_value(&mut self) -> f64 {
-        if self.items.len() == 0 {
+        if self.items.len() == 0 || self.max_weight == 0.0 {
             return 0.0
         }
 
@@ -97,5 +97,9 @@ mod tests {
         items = vec![Item::new(60.0, 10.0), Item::new(100.0, 20.0), Item::new(120.0, 30.0)];
         knapsack = KnapSack::new(items, 50.0);
         assert_eq!(knapsack.max_value(), 240.0);
+
+        items = vec![Item::new(60.0, 10.0), Item::new(100.0, 20.0), Item::new(120.0, 30.0)];
+        knapsack = KnapSack::new(items, 0.0);
+        assert_eq!(knapsack.max_value(), 0.0);
     }
 }
