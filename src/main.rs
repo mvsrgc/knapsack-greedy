@@ -35,6 +35,10 @@ impl KnapSack {
     }
 
     pub fn max_value(&mut self) -> f64 {
+        if self.items.len() == 0 {
+            return 0.0
+        }
+
         // Sort the list so that we add the items with the highest ratio first.
         self.items.sort_by(|a, b| b.ratio().partial_cmp(&a.ratio()).unwrap());
 
@@ -63,4 +67,35 @@ fn main() {
     let items: Vec<Item> = vec![Item::new(60.0, 10.0), Item::new(100.0, 20.0), Item::new(120.0, 30.0)];
     let mut knapsack: KnapSack = KnapSack::new(items, 50.0);
     println!("{}", knapsack.max_value());
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn test_stuff() {
+        let mut items: Vec<Item> = vec![Item::new(60.0, 10.0)];
+        let mut knapsack: KnapSack = KnapSack::new(items, 60.0);
+        assert_eq!(knapsack.max_value(), 60.0);
+
+        items = vec![Item::new(60.0, 10.0)];
+        knapsack = KnapSack::new(items, 5.0);
+        assert_eq!(knapsack.max_value(), 30.0);
+
+        items = vec![Item::new(60.0, 10.0), Item::new(10.0, 5.0)];
+        knapsack = KnapSack::new(items, 15.0);
+        assert_eq!(knapsack.max_value(), 70.0);
+
+        items = vec![Item::new(60.0, 10.0), Item::new(10.0, 5.0)];
+        knapsack = KnapSack::new(items, 20.0);
+        assert_eq!(knapsack.max_value(), 70.0);
+
+        items = vec![];
+        knapsack = KnapSack::new(items, 20.0);
+        assert_eq!(knapsack.max_value(), 0.0);
+
+        items = vec![Item::new(60.0, 10.0), Item::new(100.0, 20.0), Item::new(120.0, 30.0)];
+        knapsack = KnapSack::new(items, 50.0);
+        assert_eq!(knapsack.max_value(), 240.0);
+    }
 }
